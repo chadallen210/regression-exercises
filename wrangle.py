@@ -2,6 +2,10 @@
 import pandas as pd
 import numpy as np
 import os
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+
 from env import host, username, password
 
 ##### DB CONNECTION #####
@@ -54,6 +58,28 @@ def wrangle_telco():
     
     return df
 
+def split_telco(df):
+    '''
+    this function takes in the telco_churn data 
+    '''
+    
+    # split df into 20% test, 80% train_validate
+    train_validate, test = train_test_split(df, test_size=0.2, random_state=1234)
+    
+    # split train_validate into 30% validate, 70% train
+    train, validate = train_test_split(train_validate, test_size=0.3, random_state=1234)
+    
+    return train, validate, test
+
+def scale_telco(train, validate, test):
+    
+    scaler = sklearn.preprocessing.MinMaxScaler()
+
+    scaler.fit(train[['monthly_charges']])
+
+    
+    
+
 ##### ZILLOW FUNCTIONS #####
 
 def new_zillow_data():
@@ -80,7 +106,7 @@ def wrangle_zillow():
     # checks for existing file and loads
     if os.path.isfile('zillow.csv'):
         
-        df = pd.read_csv('zillow.csv', index_col=0)
+        df = pd.read_csv('zillow.csv')
         
     else:
         
@@ -89,6 +115,9 @@ def wrangle_zillow():
         
         df.to_csv('zillow.csv')
         
+    # drop column 'Unnamed: 0'
+    df = df.drop(columns='Unnamed: 0')
+
     # replace symbols, etc with NaN's
     df = df.replace(r'^\s*$', np.nan, regex=True)
     
