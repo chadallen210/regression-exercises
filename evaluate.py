@@ -66,4 +66,5 @@ def better_than_baseline(df, y):
         print(f'\nBased on RMSE, the model({rmse:.4f}) performs better than the baseline({rmse_baseline:.4f}).')
     else:
         print(f'\nBased on RMSE, the baseline({rmse_baseline:.4f}) performs better than the model ({rmse:.4f}).')
+        
 
