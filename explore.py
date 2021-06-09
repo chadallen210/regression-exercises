@@ -38,3 +38,25 @@ def plot_categorical_and_continuous_vars(df, catagorical_var, continuous_var):
     sns.boxplot(data=df, x=catagorical_var, y=continuous_var)
     plt.show()
     
+
+    
+##### FROM LESSON EXERCISES
+
+def months_to_years(df):
+    """
+    Takes in the telco df and returns the df with new 
+    categorical feature 'tenure_years'
+    """
+    df['tenure_years'] = round(df.tenure // 12)
+    df['tenure_years'] = df.tenure_years.astype('object')
+    return df
+
+
+def plot_variable_pairs(train, cols, hue=None):
+    '''
+    This function takes in a df, a list of cols to plot, and default hue=None 
+    and displays a pairplot with a red regression line.
+    '''
+    plot_kws={'line_kws':{'color':'red'}, 'scatter_kws': {'alpha': 0.7}}
+    sns.pairplot(train[cols], hue=hue, kind="reg",plot_kws={'line_kws':{'color':'red'}, 'scatter_kws': {'alpha': 0.1}})
+    plt.show()
